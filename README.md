@@ -1,4 +1,4 @@
-jedi: Android IPC Mind Tricks
+Jedi: Android IPC Mind Tricks
 =============================
 
 https://www.clover.com/challenge

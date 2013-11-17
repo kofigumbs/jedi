@@ -7,27 +7,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$PlaceholderFragment" >
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <TextSwitcher
-        android:id="@+id/title"
+    <view
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp" >
-    </TextSwitcher>
+        class="com.clover.challenge.jedi.SuperActivity$mTextView"
+        android:text="Do sharing!" />
 
-    <Button
+    <view
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
+        class="com.clover.challenge.jedi.SuperActivity$mButton"
         android:background="#2799cb"
-        android:fontFamily="sans-serif-thin"
-        android:onClick="openYoutube"
-        android:text="Open YouTube"
-        android:textColor="#ffffff"
-        android:textSize="25sp" />
+        android:onClick="youtube"
+        android:text="Youtube" />
 
 </LinearLayout>

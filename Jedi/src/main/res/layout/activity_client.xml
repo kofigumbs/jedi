@@ -10,17 +10,30 @@
     android:paddingTop="@dimen/activity_vertical_margin" >
 
     <view
+        android:id="@+id/command"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        class="com.clover.challenge.jedi.SuperActivity$mTextView"
-        android:text="Do sharing!" />
+        class="com.clover.challenge.jedi.SuperActivity$mEditText"
+        android:background="#00000000"
+        android:gravity="left"
+        android:hint="@string/hint" />
 
     <view
+        android:id="@+id/send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        class="com.clover.challenge.jedi.SuperActivity$mButton"
+        android:background="@android:color/holo_blue_dark"
+        android:text="@string/send" />
+
+    <view
+        android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         class="com.clover.challenge.jedi.SuperActivity$mButton"
-        android:background="#2799cb"
-        android:onClick="youtube"
-        android:text="Youtube" />
+        android:background="@android:color/holo_red_dark"
+        android:text="@string/cancel" />
 
 </LinearLayout>

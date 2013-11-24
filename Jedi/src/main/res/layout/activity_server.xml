@@ -15,4 +15,12 @@
         class="com.clover.challenge.jedi.SuperActivity$mTextView"
         android:text="Waiting for client..." />
 
+    <view
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        class="com.clover.challenge.jedi.SuperActivity$mButton"
+        android:background="@android:color/holo_red_light"
+        android:text="@string/cancel" />
+
 </LinearLayout>

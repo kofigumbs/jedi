@@ -17,9 +17,9 @@ Screenshots: http://goo.gl/dUQEpJ
 
 Motivation
 ---
-**NFC** - I chose NFC because it was the simplest and most user-secure way to transfer the server's IP address. Using NFC allows me to automate all of the connnection process under the hood for both the client and the server. This means theusernever has to do any manual authentication: just tap and start commanding. NFC also some provides security because it means that users will be very aware of who has access to their phone. Of course, this is not fool-proof since unatended phones are always vulnerable. Also I'm not sure how secure NFC is as a whole, so the security of the app is based on that.
+**NFC** - I chose NFC because it was the simplest and most user-secure way to transfer the server's IP address. Using NFC allows me to automate all of the connnection process under the hood for both the client and the server. This means the user never has to do any manual authentication: just tap and start commanding. NFC also some provides security because it means that users will be very aware of who has access to their phone. Of course, this is not fool-proof since unattended phones are always vulnerable. Also I'm not sure how secure NFC is as a whole, so the security of the app is based on that.
 
-**TCP** - Honestly, this decisio was almost strictly because WifiDirect sucked. I tried to implement the solution using Android's built in classes, but even the sample code didn't work. So dealing with sockets was the "manual attempt," but it actually works quite simply. Server listens for commands from client in the form of strings that contain the type and the data. Server then reacts accordingly by opening the app necessary to view data even if Shamrock is not in foreground.
+**TCP** - Honestly, this decision was almost strictly because WifiDirect was shaky. I tried to implement the solution using Android's built in classes, but even the sample code didn't work. So dealing with sockets was the "manual attempt," but it actually works quite elegantly. Server listens for commands from client in the form of strings that contain the type and the data. Server then reacts accordingly by opening the app necessary to view data, even if Shamrock is not in foreground.
 
 
 Known Issues

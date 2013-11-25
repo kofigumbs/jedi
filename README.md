@@ -3,7 +3,7 @@ What is Shamrock?
 
 Solution to the Clover Jedi challenge
 ---
-Main goal of the app is to create an app that allows inter-device coordination and communication. See the rest of the problem description for more details (http://www.github.com/clover/jedi). Winner gets a Mac Pro, but *more importantly* an on-site job interview (wink wink)!
+Main goal is to create an app that allows inter-device coordination and communication. See the rest of the problem description for more details (http://www.github.com/clover/jedi). Winner gets a Mac Pro, but *more importantly* an on-site job interview (wink wink)!
 
 
 Overview

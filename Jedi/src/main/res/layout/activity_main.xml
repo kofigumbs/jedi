@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         class="com.clover.challenge.jedi.SuperActivity$mTextView"
-        android:text="Welcome!" />
+        android:text="@string/welcome" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -27,6 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         class="com.clover.challenge.jedi.SuperActivity$mTextView"
-        android:text="to get started" />
+        android:text="@string/get_started" />
 
 </LinearLayout>

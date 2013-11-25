@@ -16,8 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+// Class that all other activities inherit from
 public class SuperActivity extends Activity {
 
+	// Global constants
 	public static final String IP = "IP_ADDR";
 	public static final String SAFE_WORD = "CLOSE";
 	public static final String PHONE = "PHONE";
@@ -26,9 +28,11 @@ public class SuperActivity extends Activity {
 	public static final String KEY = "_UNIQUE_KEY_";
 	public static final int PORT = 8080;
 
+	// Local constants
 	private static final int FONT_SIZE = 30;
 	private static final int PAD = 10;
 
+	// Creates help button in action bar
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -36,22 +40,26 @@ public class SuperActivity extends Activity {
 		return true;
 	}
 
+	// Help button listener
 	public void help(MenuItem item) {
-		new AlertDialog.Builder(this).setTitle("Help").setMessage(R.string.help).create()
-				.show();
+		new AlertDialog.Builder(this).setTitle("Help")
+				.setMessage(R.string.help).create().show();
 	}
 
+	// Returns name of wifi network for this device
 	public String getWifiName() {
 		WifiManager wifiMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-
 		String s = wifiInfo.getSSID();
+
+		// If string is surrounded by quotes
 		if (s.charAt(0) == '"')
 			s = s.substring(1, s.length() - 1);
 
 		return s;
 	}
 
+	// UI classes to ensure uniformity across components
 	public static class mTextView extends TextView {
 
 		public mTextView(Context context, AttributeSet attrs) {
@@ -82,7 +90,7 @@ public class SuperActivity extends Activity {
 		Typeface tf = Typeface.createFromAsset(v.getContext().getAssets(),
 				"fonts/Roboto-Thin.ttf");
 		v.setTypeface(tf);
-		
+
 		v.setTextSize(FONT_SIZE);
 		v.setGravity(Gravity.CENTER);
 		v.setPadding(PAD, PAD, PAD, PAD);

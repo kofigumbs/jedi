@@ -21,15 +21,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+// Activity that allows users to send messages to server device
 public class ClientActivity extends SuperActivity implements
 		DialogInterface.OnClickListener, OnClickListener, TextWatcher {
 
-	private static String wr = "^(https?://)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([/\\w \\.-]*)*/?$";
-	private static String ar = "^(\\d+ )?[a-z]+( .*)?";
-	private String serverIpAddress;
-	private String type;
+	private static final String WR = "^(https?://)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([/\\w \\.-]*)*/?$";
+	private static final String AR = "^(\\d+ )?[a-z]+( .*)?";
+	private final Handler handler = new Handler();
+
 	private boolean validCommand = false;
-	private Handler handler = new Handler();
+	private String serverIp;
+	private String type;
 	private EditText commandET;
 	private Button send;
 
@@ -45,10 +47,8 @@ public class ClientActivity extends SuperActivity implements
 		send.setOnClickListener(this);
 		findViewById(R.id.cancel).setOnClickListener(this);
 
-		serverIpAddress = getIntent().getExtras().getString(IP);
-
-		// VERIFY IP
-		if (serverIpAddress == null) {
+		serverIp = getIntent().getExtras().getString(IP);
+		if (serverIp == null) {
 			finish();
 			Toast.makeText(this, "Connection error!\nTry re-pairing.",
 					Toast.LENGTH_LONG).show();
@@ -58,37 +58,42 @@ public class ClientActivity extends SuperActivity implements
 	@Override
 	public void onBackPressed() {
 
+		// Confirmation dialogue
 		new AlertDialog.Builder(this).setMessage(R.string.cancel_confirm)
 				.setPositiveButton("Yes", this)
 				.setNegativeButton("Cancel", null).create().show();
 
 	}
 
+	// Confirmation dialogue "Yes" listener
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 		finish();
 		new Thread(new ClientThread(SAFE_WORD)).start();
 	}
 
+	// Button listeners
 	@Override
 	public void onClick(View v) {
 
+		// Cancel button pressed
 		if (v.getId() == R.id.cancel) {
-			new Thread(new ClientThread(SAFE_WORD)).start();
-			finish();
+			onBackPressed();
 		}
 
-		else if (validCommand) {
+		else // Send button pressed
+		if (validCommand) {
 			String command = commandET.getText().toString().trim();
 			Thread cThread = new Thread(new ClientThread(type + KEY + command));
-			cThread.start();
+			cThread.start(); // Send command
 
 		} else {
 			Toast.makeText(this, "Invalid command!", Toast.LENGTH_SHORT).show();
-
 		}
 	}
 
+	// Sets validCommand and type fields dynamically as user types.
+	// Also changes send button text
 	@Override
 	public void afterTextChanged(Editable e) {
 
@@ -100,13 +105,13 @@ public class ClientActivity extends SuperActivity implements
 
 			send.setText("Send phone number");
 
-		} else if (s.matches(wr)) {
+		} else if (s.matches(WR)) {
 			validCommand = true;
 			type = URL;
 
-			send.setText("Send as url");
+			send.setText("Send as URL");
 
-		} else if (s.matches(ar)) {
+		} else if (s.matches(AR)) {
 			validCommand = true;
 			type = ADDRESS;
 
@@ -122,6 +127,7 @@ public class ClientActivity extends SuperActivity implements
 
 	}
 
+	// Unused method implementations
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
@@ -131,20 +137,20 @@ public class ClientActivity extends SuperActivity implements
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 	}
 
+	// Posts s as a Toast message and in Logcat
 	private void handle(final String s) {
-
 		handler.post(new Runnable() {
-
 			@Override
 			public void run() {
 				Toast.makeText(ClientActivity.this, s, Toast.LENGTH_SHORT)
 						.show();
 				Log.d("ClientActivity", s);
 			}
-
 		});
 	}
 
+	// Sends messages to server asynchronously via sockets.
+	// Provides status updates via handle()
 	private class ClientThread implements Runnable {
 		private String command;
 
@@ -154,26 +160,24 @@ public class ClientActivity extends SuperActivity implements
 
 		public void run() {
 			try {
-				InetAddress serverAddr = InetAddress.getByName(serverIpAddress);
-				Log.d("ClientActivity", "Connecting");
-				Socket socket = new Socket(serverAddr, PORT);
-				try {
-					handle("Sending...");
-					PrintWriter out = new PrintWriter(new BufferedWriter(
-							new OutputStreamWriter(socket.getOutputStream())),
-							true);
+				Log.d("ClientActivity", "Connecting...");
 
-					out.println(command);
-					out.flush();
-					handle("Sent!");
-				} catch (Exception e) {
-					handle("Error!");
-				}
+				InetAddress serverAddr = InetAddress.getByName(serverIp);
+				Socket socket = new Socket(serverAddr, PORT);
+
+				// Send command string to server device via socket
+				handle("Sending...");
+				PrintWriter out = new PrintWriter(new BufferedWriter(
+						new OutputStreamWriter(socket.getOutputStream())), true);
+				out.println(command);
+				out.flush();
+				handle("Sent!");
 
 				socket.close();
-
 				Log.d("ClientActivity", "Closed.");
+
 			} catch (Exception e) {
+				e.printStackTrace();
 				handle("Error!");
 			}
 		}

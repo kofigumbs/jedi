@@ -11,14 +11,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
+// Listener that runs on server even when user navigates away from ServerActivity
 public class BackgroundService extends IntentService {
 
 	private Handler handler = new Handler();
 	private Socket client;
 	private ServerSocket server;
-
-	// private Thread fst;
 
 	public BackgroundService() {
 		super("BackgroundService");
@@ -28,20 +28,35 @@ public class BackgroundService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 
 		try {
+			// Open server socket
 			server = new ServerSocket(SuperActivity.PORT);
 
+			// Listen until client sends SAFE_WORD
 			while (!listen().equals(SuperActivity.SAFE_WORD))
 				;
-
 			server.close();
-		} catch (Exception e) {
 
+		} catch (Exception e) {
 			e.printStackTrace();
-			handle("Error");
+			Toast.makeText(this, "Shamrock: Connection error.\nAborting...",
+					Toast.LENGTH_LONG).show();
 
 		}
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		try {
+			server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// Waits for commands from client, calls handle(), then returns command
 	private String listen() {
 		String line = SuperActivity.SAFE_WORD;
 
@@ -53,6 +68,7 @@ public class BackgroundService extends IntentService {
 			line = in.readLine();
 			Log.d("ServerActivity", line);
 
+			// If not SAFE_WORD, execute command
 			if (!line.equals(SuperActivity.SAFE_WORD))
 				handle(line);
 
@@ -66,17 +82,7 @@ public class BackgroundService extends IntentService {
 
 	}
 
-	public void onDestroy() {
-		super.onDestroy();
-
-		try {
-			server.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
+	// Executes command in the form type + KEY + command
 	private void handle(final String s) {
 		handler.post(new Runnable() {
 			@Override
@@ -91,7 +97,7 @@ public class BackgroundService extends IntentService {
 
 				} else if (data[0].equals(SuperActivity.URL)) {
 					if (!data[1].startsWith("http"))
-							data[1] = "http://".concat(data[1]);
+						data[1] = "http://".concat(data[1]);
 					i = new Intent(Intent.ACTION_VIEW);
 					i.setData(Uri.parse(data[1]));
 
@@ -104,8 +110,6 @@ public class BackgroundService extends IntentService {
 				if (i != null)
 					startActivity(i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-				// Toast.makeText(BackgroundService.this, s, Toast.LENGTH_SHORT)
-				// .show();
 			}
 		});
 	}

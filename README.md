@@ -1,6 +1,5 @@
 What is Shamrock?
 =========
----
 
 Solution to the Clover Jedi challenge
 ---

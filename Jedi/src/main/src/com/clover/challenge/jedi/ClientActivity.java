@@ -87,6 +87,9 @@ public class ClientActivity extends SuperActivity implements
 			Thread cThread = new Thread(new ClientThread(type + KEY + command));
 			cThread.start(); // Send command
 
+			// Clear field
+			commandET.setText("");
+
 		} else {
 			Toast.makeText(this, "Invalid command!", Toast.LENGTH_SHORT).show();
 		}

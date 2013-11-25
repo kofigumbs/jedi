@@ -1,16 +1,42 @@
-Jedi: Android IPC Mind Tricks
-=============================
+What is Shamrock?
+=========
+---
 
-Winner gets a Mac Pro, solid entries get an interview at Clover. Details here: https://www.clover.com/challenge
+Solution to the Clover Jedi challenge
+---
+Main goal of the app is to create an app that allows inter-device coordination and communication. See the rest of the problem description for more details (http://www.github.com/clover/jedi). Winner gets a Mac Pro, but *more importantly* an on-site job interview (wink wink)!
 
-At Clover we're working on inter-device coordination and communication. For example, we may have a merchant-facing device that needs to communicate with a customer-facing device to coordinate payment, or with a device in the kitchen to display orders, or to run master-election algorithms to elect master node to do special things like generating sequential order numbers. More general use cases are interesting: causing your friend's phone to view a webpage, dial the phone, share contacts, or start Google Maps navigation.
 
-The Challenge: design and implement a solution to this problem where you extend Android's IPC primitives (Intents, Broadcasts, Binders/Services, Content Providers) to work inter-device.
+Overview
+---
+Shamrock uses a NFC and TCP for a one-two punch knockout. First, users pair the devices by opening the app on each, touching the phones' NFC transmitters together, then tapping the screen of one device. That's it! The phones are connected! The device whose screen was tapped is the server, and the other device is the client. The client sends commands via the on-screen text field, and the server responds automatically by opening the relevant app to display the information. 
 
-This challenge is a decathalon: API design, device discovery, network programming, UI design, security (permissioning, authentication, etc.). If you're not particularly strong in one area, that's fine!
+The command transfer uses TCP, so the devices must be connected to the same wifi network, but that network need not be online. Both phones are free to navigate away from the app, and the necessary service will run in the background (though I recommend that the server remains charging). Shamrock is currently only configured to take phone numbers, urls, and map queries.
 
-We would like the solution to work on a Wifi network (LAN). Creative uses of Bluetooth and NFC might be cool, too.
+Screenshots: http://goo.gl/dUQEpJ
 
-Judging will be done by the Clover engineering team and will be subjective based on quality of the ideas and execution.
 
-To play: Fork our GitHub repo and submit a pull request when you're ready to submit. Include in your README a high-level description of your approach.
+Motivation
+---
+**NFC** - I chose NFC because it was the simplest and most user-secure way to transfer the server's IP address. Using NFC allows me to automate all of the connnection process under the hood for both the client and the server. This means theusernever has to do any manual authentication: just tap and start commanding. NFC also some provides security because it means that users will be very aware of who has access to their phone. Of course, this is not fool-proof since unatended phones are always vulnerable. Also I'm not sure how secure NFC is as a whole, so the security of the app is based on that.
+
+**TCP** - Honestly, this decisio was almost strictly because WifiDirect sucked. I tried to implement the solution using Android's built in classes, but even the sample code didn't work. So dealing with sockets was the "manual attempt," but it actually works quite simply. Server listens for commands from client in the form of strings that contain the type and the data. Server then reacts accordingly by opening the app necessary to view data even if Shamrock is not in foreground.
+
+
+Known Issues
+---
+- Server doesn't notify client when it disconnects
+- Client notifies server, but server only checks on activity resume
+- Should give users option to enable wifi if it is not detected (instead of finshing)
+- Button selectors
+- Only tested on two devices, so probably a bunch of others
+- Lazy error trapping/alerting system
+
+
+Citations
+---
+I got the NFC diagram image from here: http://goo.gl/7zUbp1
+
+Everything else was my original work or based upon open-source projects.
+
+Oh, except for the Cover logo.

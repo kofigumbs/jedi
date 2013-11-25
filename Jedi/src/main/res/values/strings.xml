@@ -8,7 +8,7 @@
     <string name="send">&#8230;</string>
     <string name="cancel">Cancel</string>
     <string name="hint">Type!</string>
-    <string name="help">Shamrock lets you control other phones by sending text commands. Pretty cool huh? It\'s really easy to set up!\n\n1. Use NFC (Beam) to pair the phones. The phone whose screen you tap will be the receiver.\n\n2. Type a command on the sender device and watch it appear on the receiver\'s screen. Shamrock can currently handle phone numbers, urls, and physical addresses.</string>
+    <string name="help">Shamrock lets you control other phones by sending text commands. Pretty cool huh? It\'s really easy to set up!\n\n1. Use NFC (Beam) to pair the phones. The phone whose screen you tap will be the receiver.\n\n2. Type a command on the sender device and watch it appear on the receiver\'s screen. Shamrock can currently handle phone numbers, URLs, and map queries.</string>
     <string name="waiting">Waiting for client</string>
     <string name="welcome">Welcome!</string>
     <string name="get_started">to get started.</string>
